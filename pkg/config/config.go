@@ -46,7 +46,26 @@ type Config struct {
  */
 // tag::initDriver[]
 func NewDriver(settings *Config) (neo4j.Driver, error) {
-	return nil, nil
+	// Create new Driver instance
+	driver, err := neo4j.NewDriver(
+		settings.Uri,
+		neo4j.BasicAuth(settings.Username, settings.Password, ""),
+	)
+
+	// Check error in driver instantiation
+	if err != nil {
+		return nil, err
+	}
+
+	// Verify Connectivity
+	err = driver.VerifyConnectivity()
+
+	// If connectivity fails, handle the error
+	if err != nil {
+		return nil, err
+	}
+
+	return driver, nil
 }
 
 // end::initDriver[]
