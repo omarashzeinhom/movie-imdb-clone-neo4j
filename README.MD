@@ -32,3 +32,8 @@ WHERE p.name ='Kevin Bacon' /*FILTERS PROPERTY*/
 RETURN p.born
 /*p.born Returns 1958*/
 ```
+
+
+### References 
+
+1. [Adding GraphQL syntactical highlighting for code blocks](https://meta.stackexchange.com/questions/358925/adding-graphql-syntactical-highlighting-for-code-blocks)
