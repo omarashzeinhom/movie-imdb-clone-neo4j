@@ -3,13 +3,14 @@ package main
 // tag::import[]
 import (
 	"fmt"
+
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 )
 
 // end::import[]
 
 func main() {
-	
+
 }
 
 /*
@@ -32,11 +33,11 @@ scheme        port number
 
 func basicAuth() (neo4j.AuthToken, error) {
 	username := "neo4j"
-	password := "letmein"
+	password := "WEdGVLig6iSV2PnWmUBOKFe0tra7rRB1KJ2xj5GL3lE"
 
-	auth :=
+	auth := neo4j.BasicAuth("neo4j", "WEdGVLig6iSV2PnWmUBOKFe0tra7rRB1KJ2xj5GL3lE", "")
 	// tag::auth[]
-		neo4j.BasicAuth(username, password, "")
+	neo4j.BasicAuth(username, password, "")
 	// end::auth[]
 
 	return auth, nil

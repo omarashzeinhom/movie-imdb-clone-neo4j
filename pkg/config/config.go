@@ -29,10 +29,9 @@ func ReadConfig(path string) (*Config, error) {
 // end::readConfig[]
 
 type Config struct {
-	Uri      string `json:"NEO4J_URI"`
-	Username string `json:"NEO4J_USERNAME"`
-	Password string `json:"NEO4J_PASSWORD"`
-
+	Uri        string `json:"NEO4J_URI"`
+	Username   string `json:"NEO4J_USERNAME"`
+	Password   string `json:"NEO4J_PASSWORD"`
 	Port       int    `json:"APP_PORT"`
 	JwtSecret  string `json:"JWT_SECRET"`
 	SaltRounds int    `json:"SALT_ROUNDS"`
