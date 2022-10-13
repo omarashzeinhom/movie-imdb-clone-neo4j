@@ -1,9 +1,11 @@
 package services
 
 import (
+	"fmt"
 	"math/rand"
 
 	"github.com/neo4j-graphacademy/neoflix/pkg/fixtures"
+	"github.com/neo4j-graphacademy/neoflix/pkg/ioutils"
 
 	"github.com/neo4j-graphacademy/neoflix/pkg/routes/paging"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
@@ -43,16 +45,58 @@ func NewMovieService(loader *fixtures.FixtureLoader, driver neo4j.Driver) MovieS
 // tag::all[]
 func (ms *neo4jMovieService) FindAll(userId string, page *paging.Paging) (_ []Movie, err error) {
 	// TODO: Open an Session
-	// TODO: Execute a query in a new Read Transaction
-	// TODO: Get a list of Movies from the Result
-	// TODO: Close the session
+	session := ms.driver.NewSession(neo4j.SessionConfig{})
 
-	popularMovies, err := ms.loader.ReadArray("fixtures/popular.json")
+	// TODO: Close the session
+	defer func() {
+		err = ioutils.DeferredClose(session, err)
+	}()
+
+	// TODO: Execute a query in a new Read Transaction
+
+	results, err := session.ReadTransaction(func(
+		tx neo4j.Transaction) (interface{}, error) {
+
+		//SORT LIST OF MOVIES
+		sort := page.Sort()
+
+		result, err := tx.Run(fmt.Sprintf(`
+		MATCH (m:Movie)
+		WHERE m.`+"`%[1]s`"+` IS NOT NULL
+		RETURN m {.* } AS movie
+		ORDER BY m.`+"`%[1]s`"+` %s		SKIP $skip
+		LIMIT $limit
+		
+		`, sort, page.Order()), map[string]interface{}{
+			"skip":  page.Skip(),
+			"limit": page.Limit(),
+		})
+		//DEBUG IF ANY ERRORS EXIST
+		if err != nil {
+			return nil, err
+		}
+
+		// TODO: Get a list of Movies from the Result
+		records, err := result.Collect()
+		if err != nil {
+			return nil, err
+		}
+
+		var results []map[string]interface{}
+		for _, record := range records {
+			movie, _ := record.Get("movie")
+			results = append(results, movie.(map[string]interface{}))
+		}
+		return results, nil
+
+	})
+
+	// Return the Results
 	if err != nil {
 		return nil, err
 	}
+	return results.([]Movie), nil
 
-	return fixtures.Slice(popularMovies, page.Skip(), page.Limit()), err
 }
 
 // end::all[]

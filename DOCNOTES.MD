@@ -8,10 +8,11 @@ Instead, sessions should be considered a client-side abstraction for grouping un
 
 To open a new session, call the NewSession() method on the driver.
 
-Open a new Session
+Open and Close a new Session
 
 ```go
 session := driver.NewSession(neo4j.SessionConfig{})
+//CLOSE SESSION
 defer session.Close()
 ```
 
