@@ -482,3 +482,43 @@ Point2D in the cartesian space.
 
 point({x: 10, y: 20})
 ```
+
+Point2D
+
+A Point2D struct represents a two-dimensional in Cartesian space or in the WGS84 space. The .SpatialRefId property indicates the type of the coordinate and the .X and .Y property represent the location.
+
+When a type is created with latitude and longitude values, the values are saved as Y and X respectively.
+
+```go
+wgs842DResult, _ := record.Get("wgs842D")
+wgs842D := wgs842DResult.(neo4j.Point2D)
+// {SpatialRefId: xxxx, X: 10, y: 20}
+
+cartesian2DResult, _ := record.Get("cartesian2D")
+cartesian2D := cartesian2DResult.(neo4j.Point2D)
+// {SpatialRefId: xxxx, X: 10, y: 20}
+```
+
+Point3D
+The Point3D struct is similar to the Point2D type, with the addition of a .Z property.
+
+```go
+wgs842DResult, _ := record.Get("wgs842D")
+wgs842D := wgs842DResult.(neo4j.Point2D)
+// {SpatialRefId: xxxx, X: 10, y: 20}
+
+cartesian2DResult, _ := record.Get("cartesian2D")
+cartesian2D := cartesian2DResult.(neo4j.Point2D)
+// {SpatialRefId: xxxx, X: 10, y: 20}
+```
+
+Distance
+
+When using the distance() function in Cypher, the distance calculated between two points is returned as a float.
+
+```go
+WITH point({x: 1, y:1}) AS one,
+     point({x: 10, y: 10}) AS two
+
+RETURN distance(one, two) // 12.727922061357855
+```
