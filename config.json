@@ -1,8 +1,8 @@
 {
   "APP_PORT": 3000,
-  "NEO4J_URI": "bolt://44.200.34.147:7687",
+  "NEO4J_URI": "bolt://18.207.107.20:7687",
   "NEO4J_USERNAME": "neo4j",
-  "NEO4J_PASSWORD": "batch-numerals-distress",
+  "NEO4J_PASSWORD": "levers-takeoff-tent",
   "JWT_SECRET": "secret",
   "SALT_ROUNDS": 10
 }
